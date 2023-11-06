@@ -1,16 +1,14 @@
-# enderchest
+# Nama  : Rafael Bismo Dewandaru
+# NPM   : 2206824666
+# Kelas : PBP - F
 
-A new Flutter project.
+<details>
+<summary>Tugas 7</summary>
 
-## Getting Started
+### 1. Apa perbedaan utama antara stateless dan stateful widget dalam konteks pengembangan aplikasi Flutter?
 
-This project is a starting point for a Flutter application.
+### 2. Sebutkan seluruh widget yang kamu gunakan untuk menyelesaikan tugas ini dan jelaskan fungsinya masing-masing.
 
-A few resources to get you started if this is your first Flutter project:
+### 3. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+</details>
