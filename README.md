@@ -19,5 +19,16 @@ Stateful Widget:
 ### 2. Sebutkan seluruh widget yang kamu gunakan untuk menyelesaikan tugas ini dan jelaskan fungsinya masing-masing.
 
 ### 3. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)
-
+1. Saya generate proyek Flutter baru dengan nama enderchest, kemudian masuk ke dalam direktori proyek tersebut lalu menjalankannya
+2. Pada direktori enderchest\lib saya membuat file dart baru bernama menu.dart lalu import 'package:flutter/material.dart';
+3. Kemudian saya membuat tiga button sederhana dengan menambahkan beberapa kode kedalam file menu.dart dan membuat stateless widget bernama MyHomePage
+4. Saya juga menambahkan kode yang ada di tutorial 6 untuk didalam Widget build, dan mengubah ShopCard menjadi stateless
+5. Untuk mendapat bonus dengan mengimplementasikan warna-warna yang berbeda untuk setiap tombol; Lihat Item, Tambah Item, dan Logout, saya menambahkan attibut Color color kedalam class ShopItem, dan menggunakannya di dalam class ShopCard.
+~~~
+final List<ShopItem> items = [
+  ShopItem("Lihat Item", Icons.checklist, Colors.blue), // Specify different colors
+  ShopItem("Tambah Item", Icons.add_shopping_cart, Colors.green),
+  ShopItem("Logout", Icons.logout, Colors.red),
+];
+~~~
 </details>
