@@ -45,3 +45,65 @@ final List<ShopItem> items = [
 ];
 ~~~
 </details>
+
+
+<details>
+<summary>Tugas 8</summary>
+
+### 4. Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement(), disertai dengan contoh mengenai penggunaan kedua metode tersebut yang tepat!
+Navigator.push()
+- digunakan untuk menambahkan rute baru ke atas stack navigasi, berarti rute baru ditumpuk di atas rute saat ini.
+- membawa user ke halaman baru tanpa menghilangkan histori navigasi sebelumnya, sehingga saat user kembali, user akan kembali ke rute sebelumnya (rute di bawah rute baru).
+- Contoh: dalam aplikasi e-commerce, ketika user menekan item untuk melihat detailnya dapat menggunakan Navigator.push() untuk membawa user ke halaman detail. Ketika user menekan tombol kembali, user akan kembali ke halaman daftar produk.
+
+Navigator.pushReplacement()
+- digunakan untuk menggantikan rute saat ini dengan rute baru di stack navigasi.
+- mengganti halaman saat ini dengan halaman baru tanpa kemungkinan untuk kembali, sehingga saat user kembali, user tidak akan kembali ke rute sebelumnya karena telah digantikan.
+- Contoh: dalam aplikasi yang memiliki proses login, setelah user berhasil masuk akan membawa user ke halaman beranda dan menghapus halaman login dari stack. Hal ini mencegah user kembali ke layar login dengan menekan tombol kembali.
+
+### 5. Jelaskan masing-masing layout widget pada Flutter dan konteks penggunaannya masing-masing!
+1. Column & Row: Column mengatur elemen secara vertikal, sedangkan Row mengatur elemen secara horizontal.
+2. Container: Wadah untuk mengatur tata letak dan memberi styling pada elemen, misalnya padding, margin, alignment, etc.
+3. Stack: Digunakan untuk menumpuk widget/elemen satu di atas yang lain.
+4. GridView: Menampilkan elemen dalam grid yang teratur dengan bentuk tabel.
+5. ListView: Menampilkan elemen yang dapat di-scroll secara vertikal.
+6. Expanded & Flexible: Mengontrol bagian dari ruang yang tersedia yang digunakan. Expanded mengisi ruang tersedia, sedangkan Flexible memberikan lebih banyak kontrol atas faktor fleksibilitas.
+7. Padding: Memberikan padding di sekeliling elemen child.
+8. Transform: digunakan untuk mengubah ukuran dan posisi elemen child
+9. Align: Mengatur posisi elemen child sesuai dengan alignment yang ditentukan.
+10. Wrap: Membuat row atau column dan secara otomatis beralih ke row atau column berikutnya setelah ruang di row atau column saat ini habis.
+11. Scaffold: Memberikan struktur dasar material design seperti AppBar, Drawer, dan FloatingActionButton.
+12. ConstrainedBox, SizedBox, & AspectRatio: Mengontrol ukuran atau aspek rasio dari elemen childnya.
+
+
+
+### 6. Sebutkan apa saja elemen input pada form yang kamu pakai pada tugas kali ini dan jelaskan mengapa kamu menggunakan elemen input tersebut!
+TextFormField untuk Nama Item (_name): Digunakan untuk user input nama item. TextField adalah elemen input dasar dalam Flutter yang digunakan untuk memasukkan teks.
+TextFormField untuk Harga Item (_price): Digunakan untuk user input harga item. Dapat menggunakan TextField karena nanti harga yang diinput akan di parse dan di validasi input berupa angka menggunakan kode
+~~~
+onChanged: (String? value) {
+    setState(() {
+      _price = int.parse(value!);
+    });
+  },
+  validator: (String? value) {
+    if (value == null || value.isEmpty) {
+      return "Harga tidak boleh kosong!";
+    }
+    if (int.tryParse(value) == null) {
+      return "Harga harus berupa angka!";
+    }
+    return null;
+},
+~~~
+TextFormField untuk Deskripsi Item (_description): user dapat menulis deskripsi tentang item menggunakan TextField.
+
+ 
+### 7. Bagaimana penerapan clean architecture pada aplikasi Flutter?
+Penerapan Clean Architecture pada aplikasi Flutter mengarah pada organisasi struktural yang lebih rapi dan pembagian fokus yang terorganisir, dengan tujuan untuk mencapai modularitas dan kemudahan dalam pengujian. Sebagai contoh, dalam praktik Clean Architecture, kita dapat menciptakan direktori terpisah untuk memisahkan file .dart yang berbeda, seperti untuk screen, widget, dan lain-lain, memastikan bahwa setiap komponen memiliki lokasi khusus, yang juga memudahkan dalam manajemen dan pemeliharaan kode. Pendekatan ini membantu dalam menjaga struktur kode yang bersih dan terorganisir, sekaligus mempermudah pencarian dan perbaikan bagian tertentu dari aplikasi ketika diperlukan.
+
+
+### 8. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial)
+
+
+</details>
