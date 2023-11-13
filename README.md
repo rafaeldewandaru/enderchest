@@ -299,7 +299,7 @@ validator: (String? value) {
   return null;
 },
 ~~~
-Kemudian saya juga membuat drawer lalu menghubungkan opsi tambah item yang berada pada drawer dan halaman utama ke shoplis_form.dart
+Kemudian saya juga membuat drawer lalu menghubungkan opsi tambah item yang berada pada drawer dan halaman utama ke shoplist_form.dart
 ~~~
 import 'package:flutter/material.dart';
 import 'package:enderchest/screens/menu.dart';
