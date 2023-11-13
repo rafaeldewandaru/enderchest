@@ -105,7 +105,7 @@ Penerapan Clean Architecture pada aplikasi Flutter mengarah pada organisasi stru
 
 ### 8. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial)
 Implementasi Bonus
-Membuat objek model dalam file item.dart untuk Item
+1. Membuat objek model dalam file item.dart untuk Item
 ~~~
 class Item {
   final String name;
@@ -115,8 +115,8 @@ class Item {
   Item({required this.name, required this.price, required this.description});
 }
 ~~~
-<br />
-Membuat file baru pada screens yaitu see_items.dart untuk menampilkan semua item yang sudah ditambahkan
+
+2. Membuat file baru pada screens yaitu see_items.dart untuk menampilkan semua item yang sudah ditambahkan
 ~~~
 import 'package:flutter/material.dart';
 import 'package:enderchest/models/item.dart'; 
@@ -147,8 +147,8 @@ class ProductListPage extends StatelessWidget {
   }
 }
 ~~~
-<br />
-Mengarahkan user ke halaman tersebut jika menekan tombol Lihat Produk pada drawer
+
+3. Mengarahkan user ke halaman tersebut jika menekan tombol Lihat Produk pada drawer
 ~~~
 ListTile(
   leading: const Icon(Icons.movie),
@@ -164,8 +164,7 @@ ListTile(
 ),
 ~~~
 
-<br />
-Mengarahkan user ke halaman tersebut jika menekan tombol Lihat Produk pada drawer
+4. Mengarahkan user ke halaman tersebut jika menekan tombol Lihat Produk pada drawer
 ~~~
 if (item.name == "Lihat Item") {
     Navigator.push(
