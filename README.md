@@ -55,7 +55,7 @@ Navigator.push()
 - digunakan untuk menambahkan rute baru ke atas stack navigasi, berarti rute baru ditumpuk di atas rute saat ini.
 - membawa user ke halaman baru tanpa menghilangkan histori navigasi sebelumnya, sehingga saat user kembali, user akan kembali ke rute sebelumnya (rute di bawah rute baru).
 - Contoh: dalam aplikasi e-commerce, ketika user menekan item untuk melihat detailnya dapat menggunakan Navigator.push() untuk membawa user ke halaman detail. Ketika user menekan tombol kembali, user akan kembali ke halaman daftar produk.
-
+<br />
 Navigator.pushReplacement()
 - digunakan untuk menggantikan rute saat ini dengan rute baru di stack navigasi.
 - mengganti halaman saat ini dengan halaman baru tanpa kemungkinan untuk kembali, sehingga saat user kembali, user tidak akan kembali ke rute sebelumnya karena telah digantikan.
@@ -78,7 +78,7 @@ Navigator.pushReplacement()
 
 
 ### 6. Sebutkan apa saja elemen input pada form yang kamu pakai pada tugas kali ini dan jelaskan mengapa kamu menggunakan elemen input tersebut!
-TextFormField untuk Nama Item (_name): Digunakan untuk user input nama item. TextField adalah elemen input dasar dalam Flutter yang digunakan untuk memasukkan teks.
+TextFormField untuk Nama Item (_name): Digunakan untuk user input nama item. TextField adalah elemen input dasar dalam Flutter yang digunakan untuk memasukkan teks.<br />
 TextFormField untuk Harga Item (_price): Digunakan untuk user input harga item. Dapat menggunakan TextField karena nanti harga yang diinput akan di parse dan di validasi input berupa angka menggunakan kode
 ~~~
 onChanged: (String? value) {
