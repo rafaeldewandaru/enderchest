@@ -62,24 +62,24 @@ Navigator.pushReplacement()
 - Contoh: dalam aplikasi yang memiliki proses login, setelah user berhasil masuk akan membawa user ke halaman beranda dan menghapus halaman login dari stack. Hal ini mencegah user kembali ke layar login dengan menekan tombol kembali.
 
 ### 5. Jelaskan masing-masing layout widget pada Flutter dan konteks penggunaannya masing-masing!
-1. Column & Row: Column mengatur elemen secara vertikal, sedangkan Row mengatur elemen secara horizontal.
-2. Container: Wadah untuk mengatur tata letak dan memberi styling pada elemen, misalnya padding, margin, alignment, etc.
-3. Stack: Digunakan untuk menumpuk widget/elemen satu di atas yang lain.
-4. GridView: Menampilkan elemen dalam grid yang teratur dengan bentuk tabel.
-5. ListView: Menampilkan elemen yang dapat di-scroll secara vertikal.
-6. Expanded & Flexible: Mengontrol bagian dari ruang yang tersedia yang digunakan. Expanded mengisi ruang tersedia, sedangkan Flexible memberikan lebih banyak kontrol atas faktor fleksibilitas.
-7. Padding: Memberikan padding di sekeliling elemen child.
-8. Transform: digunakan untuk mengubah ukuran dan posisi elemen child
-9. Align: Mengatur posisi elemen child sesuai dengan alignment yang ditentukan.
-10. Wrap: Membuat row atau column dan secara otomatis beralih ke row atau column berikutnya setelah ruang di row atau column saat ini habis.
-11. Scaffold: Memberikan struktur dasar material design seperti AppBar, Drawer, dan FloatingActionButton.
-12. ConstrainedBox, SizedBox, & AspectRatio: Mengontrol ukuran atau aspek rasio dari elemen childnya.
+- Column & Row: Column mengatur elemen secara vertikal, sedangkan Row mengatur elemen secara horizontal.
+- Container: Wadah untuk mengatur tata letak dan memberi styling pada elemen, misalnya padding, margin, alignment, etc.
+- Stack: Digunakan untuk menumpuk widget/elemen satu di atas yang lain.
+- GridView: Menampilkan elemen dalam grid yang teratur dengan bentuk tabel.
+- ListView: Menampilkan elemen yang dapat di-scroll secara vertikal.
+- Expanded & Flexible: Mengontrol bagian dari ruang yang tersedia yang digunakan. Expanded mengisi ruang tersedia, sedangkan Flexible memberikan lebih banyak kontrol atas faktor fleksibilitas.
+- Padding: Memberikan padding di sekeliling elemen child.
+- Transform: digunakan untuk mengubah ukuran dan posisi elemen child
+- Align: Mengatur posisi elemen child sesuai dengan alignment yang ditentukan.
+- Wrap: Membuat row atau column dan secara otomatis beralih ke row atau column berikutnya setelah ruang di row atau column saat ini habis.
+- Scaffold: Memberikan struktur dasar material design seperti AppBar, Drawer, dan FloatingActionButton.
+- ConstrainedBox, SizedBox, & AspectRatio: Mengontrol ukuran atau aspek rasio dari elemen childnya.
 
 
 
 ### 6. Sebutkan apa saja elemen input pada form yang kamu pakai pada tugas kali ini dan jelaskan mengapa kamu menggunakan elemen input tersebut!
-TextFormField untuk Nama Item (_name): Digunakan untuk user input nama item. TextField adalah elemen input dasar dalam Flutter yang digunakan untuk memasukkan teks.<br />
-TextFormField untuk Harga Item (_price): Digunakan untuk user input harga item. Dapat menggunakan TextField karena nanti harga yang diinput akan di parse dan di validasi input berupa angka menggunakan kode
+1. TextFormField untuk Nama Item (_name): Digunakan untuk user input nama item. TextField adalah elemen input dasar dalam Flutter yang digunakan untuk memasukkan teks.
+2. TextFormField untuk Harga Item (_price): Digunakan untuk user input harga item. Dapat menggunakan TextField karena nanti harga yang diinput akan di parse dan di validasi input berupa angka menggunakan kode
 ~~~
 onChanged: (String? value) {
     setState(() {
@@ -96,7 +96,7 @@ onChanged: (String? value) {
     return null;
 },
 ~~~
-TextFormField untuk Deskripsi Item (_description): user dapat menulis deskripsi tentang item menggunakan TextField.
+3. TextFormField untuk Deskripsi Item (_description): user dapat menulis deskripsi tentang item menggunakan TextField.
 
  
 ### 7. Bagaimana penerapan clean architecture pada aplikasi Flutter?
@@ -104,6 +104,75 @@ Penerapan Clean Architecture pada aplikasi Flutter mengarah pada organisasi stru
 
 
 ### 8. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial)
+Implementasi Bonus
+Membuat objek model dalam file item.dart untuk Item
+~~~
+class Item {
+  final String name;
+  final int price;
+  final String description;
 
+  Item({required this.name, required this.price, required this.description});
+}
+~~~
+<br />
+Membuat file baru pada screens yaitu see_items.dart untuk menampilkan semua item yang sudah ditambahkan
+~~~
+import 'package:flutter/material.dart';
+import 'package:enderchest/models/item.dart'; 
+
+class ProductListPage extends StatelessWidget {
+  final List<Item> items;
+
+  ProductListPage({Key? key, required this.items}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Daftar Item'),
+      ),
+      body: ListView.builder(
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: ListTile(
+              title: Text(items[index].name),
+              subtitle: Text('Harga: ${items[index].price}\nDeskripsi: ${items[index].description}'),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+~~~
+<br />
+Mengarahkan user ke halaman tersebut jika menekan tombol Lihat Produk pada drawer
+~~~
+ListTile(
+  leading: const Icon(Icons.movie),
+  title: const Text('Lihat Item'),
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              ProductListPage(items: itemList)),
+    );
+  },
+),
+~~~
+<br />
+Mengarahkan user ke halaman tersebut jika menekan tombol Lihat Produk pada drawer
+~~~
+if (item.name == "Lihat Item") {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ProductListPage(items: itemList)),
+    );
+  }
+~~~
 
 </details>

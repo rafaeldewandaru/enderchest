@@ -18,7 +18,7 @@ class LeftDrawer extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Mailboxd',
+                  'EnderChest',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,
@@ -28,7 +28,7 @@ class LeftDrawer extends StatelessWidget {
                 ),
                 Padding(padding: EdgeInsets.all(10)),
                 Text(
-                  "The place to keep track on the movies you have watched!",
+                  "Store your Items in a portable chest",
                   textAlign: TextAlign.center, // Align text to center
                   style: TextStyle(
                     fontSize: 15, // Set font size to 15
@@ -53,7 +53,7 @@ class LeftDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.add_shopping_cart),
-            title: const Text('Tambah Film'),
+            title: const Text('Tambah Item'),
             // Bagian redirection ke ShopFormPage
             onTap: () {
               Navigator.push(
