@@ -104,6 +104,297 @@ Penerapan Clean Architecture pada aplikasi Flutter mengarah pada organisasi stru
 
 
 ### 8. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial)
+Membuat folder baru pada lib yaitu screens dan widgets untuk mempermudah manajemen file, kemudian membuat file shoplist_form.dart untuk form yang menerima input user
+~~~
+import 'package:flutter/material.dart';
+import '../../widgets/left_drawer.dart';
+import 'package:enderchest/models/item.dart';
+
+class ShopFormPage extends StatefulWidget {
+  const ShopFormPage({super.key});
+
+  @override
+  State<ShopFormPage> createState() => _ShopFormPageState();
+}
+
+List<Item> itemList = [];
+
+class _ShopFormPageState extends State<ShopFormPage> {
+  final _formKey = GlobalKey<FormState>();
+  String _name = "";
+  int _price = 0;
+  String _description = "";
+
+// Global list to store products
+  void _saveProduct() {
+    if (_formKey.currentState!.validate()) {
+      // Add product to the global list
+      itemList.add(Item(
+        name: _name,
+        price: _price,
+        description: _description,
+      ));
+
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Item berhasil tersimpan'),
+            content: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Nama: $_name'),
+                  Text('Harga: $_price'),
+                  Text('Deskripsi: $_description'),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        },
+      );
+
+      _formKey.currentState!.reset();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Center(
+          child: Text(
+            'Form Tambah Item',
+          ),
+        ),
+        backgroundColor: Colors.indigo,
+        foregroundColor: Colors.white,
+      ),
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Nama Item",
+                  labelText: "Nama Item",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+                onChanged: (String? value) {
+                  setState(() {
+                    _name = value!;
+                  });
+                },
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Nama tidak boleh kosong!";
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Harga",
+                  labelText: "Harga",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+                onChanged: (String? value) {
+                  setState(() {
+                    _price = int.parse(value!);
+                  });
+                },
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Harga tidak boleh kosong!";
+                  }
+                  if (int.tryParse(value) == null) {
+                    return "Harga harus berupa angka!";
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Deskripsi",
+                  labelText: "Deskripsi",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+                onChanged: (String? value) {
+                  setState(() {
+                    // TODO: Tambahkan variabel yang sesuai
+                    _description = value!;
+                  });
+                },
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Deskripsi tidak boleh kosong!";
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.indigo),
+                  ),
+                  onPressed: _saveProduct,
+                  child: const Text(
+                    "Save",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ]),
+        ),
+      ),
+    );
+  }
+}
+~~~
+Membuat juga kode untuk validasi input dari user dengan ketentuan setiap elemen input tidak boleh kosong dan setiap elemen input harus berisi data dengan tipe data atribut modelnya.
+~~~
+validator: (String? value) {
+  if (value == null || value.isEmpty) {
+    return "Nama tidak boleh kosong!";
+  }
+  return null;
+},
+~~~
+~~~
+validator: (String? value) {
+  if (value == null || value.isEmpty) {
+    return "Harga tidak boleh kosong!";
+  }
+  if (int.tryParse(value) == null) {
+    return "Harga harus berupa angka!";
+  }
+  return null;
+},
+~~~
+Kemudian saya juga membuat drawer lalu menghubungkan opsi tambah item yang berada pada drawer dan halaman utama ke shoplis_form.dart
+~~~
+import 'package:flutter/material.dart';
+import 'package:enderchest/screens/menu.dart';
+import '../screens/shoplist_form.dart';
+import '../screens/see_items.dart';
+
+class LeftDrawer extends StatelessWidget {
+  const LeftDrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.indigo,
+            ),
+            child: Column(
+              children: [
+                Text(
+                  'EnderChest',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                Padding(padding: EdgeInsets.all(10)),
+                Text(
+                  "Store your Items in a portable chest",
+                  textAlign: TextAlign.center, // Align text to center
+                  style: TextStyle(
+                    fontSize: 15, // Set font size to 15
+                    color: Colors.white, // Set text color to white
+                    fontWeight: FontWeight.normal, // Set font weight to normal
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.home_outlined),
+            title: const Text('Halaman Utama'),
+            // Bagian redirection ke MyHomePage
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyHomePage(),
+                  ));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.add_shopping_cart),
+            title: const Text('Tambah Item'),
+            // Bagian redirection ke ShopFormPage
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ShopFormPage(),
+                  ));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.movie),
+            title: const Text('Lihat Item'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ProductListPage(items: itemList)),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+~~~
+Menghubungkan pada halaman utama
+~~~
+if (item.name == "Tambah Item") {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ShopFormPage(),
+      ));
+}
+~~~
+
 Implementasi Bonus
 1. Membuat objek model dalam file item.dart untuk Item
 ~~~
@@ -164,7 +455,7 @@ ListTile(
 ),
 ~~~
 
-4. Mengarahkan user ke halaman tersebut jika menekan tombol Lihat Produk pada drawer
+4. Mengarahkan user ke halaman tersebut jika menekan tombol Lihat Produk pada halaman utama
 ~~~
 if (item.name == "Lihat Item") {
     Navigator.push(
