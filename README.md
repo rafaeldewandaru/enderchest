@@ -473,6 +473,7 @@ if (item.name == "Lihat Item") {
 <summary>Tugas 9</summary>
 
 ### 9. Apakah bisa kita melakukan pengambilan data JSON tanpa membuat model terlebih dahulu? Jika iya, apakah hal tersebut lebih baik daripada membuat model sebelum melakukan pengambilan data JSON?
+Kita bisa melakukan pengambilan data JSON tanpa membuat model terlebih dahulu dan langsung menggunakan data JSON yang telah di-parse untuk pengembangan dengan cepat, tetapi menggunakan model data adalah praktik yang baik untuk mempermudah pemeliharaan dan meningkatkan kejelasan kode karena data akan lebih terstruktur, terutama untuk aplikasi yang lebih besar dan kompleks.
 
 ### 10. Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
 Dalam pengembangan aplikasi Flutter, CookieRequest berperan penting dalam mengelola cookies untuk fungsi seperti mengelola session, pengguna, autentikasi, penyimpanan preferensi, dan tracking. Instance perlu dibagikan ke semua komponen di aplikasi flutter agar semua komponen aplikasi menggunakan sesi yang sama untuk berkomunikasi yang bermanfaat untuk memastikan konsistensi data, efisiensi sumber daya, serta keamanan yang lebih baik sehingga memudahkan pengembangan dan pemeliharaan aplikasi. Pendekatan ini juga mendukung konsistensi cookie melintasi siklus hidup berbagai komponen aplikasi, memudahkan debugging, dan menjaga kebijakan keamanan yang konsisten, sesuai dengan kebutuhan spesifik aplikasi dan arsitektur dari backend.
@@ -484,9 +485,341 @@ Dalam pengembangan aplikasi Flutter, CookieRequest berperan penting dalam mengel
 4. setelah data di-parse dan diubah menjadi model, data tersebut dapat digunakan untuk membangun widget di Flutter dan menampilkan informasinya di UI
 
 ### 12. Jelaskan mekanisme autentikasi dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+1. pada form login aplikasi Flutter, kita memasukkan data username dan password
+2. data tersebut akan dikirim ke backend django dan menerimanya sebagai request login
+3. django menerima data login tersebut untuk mengautentikasi pengguna berdasarkan database lalu akan mengirimkan respons ke aplikasi Flutter
+4. kemudian aplikasi Flutter akan mengecek respons yang dikirimkan dari django
+5. apabila request login berhasil, maka user akan diarahkan ke Home Page dan tampilkan menu pada Flutter
 
 ### 13. Sebutkan seluruh widget yang kamu pakai pada tugas ini dan jelaskan fungsinya masing-masing.
 
 ### 14. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
+1. Membuat halaman login dan menggunakan url web django untuk request login
+~~~
+import 'package:enderchest/screens/menu.dart';
+import 'package:flutter/material.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+
+void main() {
+    runApp(const LoginApp());
+}
+
+class LoginApp extends StatelessWidget {
+const LoginApp({super.key});
+
+@override
+Widget build(BuildContext context) {
+    return MaterialApp(
+        title: 'Login',
+        theme: ThemeData(
+            primarySwatch: Colors.blue,
+    ),
+    home: const LoginPage(),
+    );
+    }
+}
+
+class LoginPage extends StatefulWidget {
+    const LoginPage({super.key});
+
+    @override
+    _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+    final TextEditingController _usernameController = TextEditingController();
+    final TextEditingController _passwordController = TextEditingController();
+
+    @override
+    Widget build(BuildContext context) {
+        final request = context.watch<CookieRequest>();
+        return Scaffold(
+            appBar: AppBar(
+                title: const Text('Login'),
+            ),
+            body: Container(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                        TextField(
+                            controller: _usernameController,
+                            decoration: const InputDecoration(
+                                labelText: 'Username',
+                            ),
+                        ),
+                        const SizedBox(height: 12.0),
+                        TextField(
+                            controller: _passwordController,
+                            decoration: const InputDecoration(
+                                labelText: 'Password',
+                            ),
+                            obscureText: true,
+                        ),
+                        const SizedBox(height: 24.0),
+                        ElevatedButton(
+                            onPressed: () async {
+                                String username = _usernameController.text;
+                                String password = _passwordController.text;
+
+                                // Cek kredensial
+                                // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+                                // Untuk menyambungkan Android emulator dengan Django pada localhost,
+                                // gunakan URL http://10.0.2.2/
+                                final response = await request.login("http://127.0.0.1:8000/auth/login/", {
+                                'username': username,
+                                'password': password,
+                                });
+                    
+                                if (request.loggedIn) {
+                                    String message = response['message'];
+                                    String uname = response['username'];
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => MyHomePage()),
+                                    );
+                                    ScaffoldMessenger.of(context)
+                                        ..hideCurrentSnackBar()
+                                        ..showSnackBar(
+                                            SnackBar(content: Text("$message Selamat datang, $uname.")));
+                                    } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                            title: const Text('Login Gagal'),
+                                            content:
+                                                Text(response['message']),
+                                            actions: [
+                                                TextButton(
+                                                    child: const Text('OK'),
+                                                    onPressed: () {
+                                                        Navigator.pop(context);
+                                                    },
+                                                ),
+                                            ],
+                                        ),
+                                    );
+                                }
+                            },
+                            child: const Text('Login'),
+                        ),
+                    ],
+                ),
+            ),
+        );
+    }
+}
+~~~
+kemudian saya juga menambahkan fungsi yang sesuai pada web django
+
+2. Membuat file item.dart untuk model yang akan saya gunakan
+~~~
+// To parse this JSON data, do
+//
+//     final item = itemFromJson(jsonString);
+
+import 'dart:convert';
+
+List<Item> itemFromJson(String str) => List<Item>.from(json.decode(str).map((x) => Item.fromJson(x)));
+
+String itemToJson(List<Item> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class Item {
+    String model;
+    int pk;
+    Fields fields;
+
+    Item({
+        required this.model,
+        required this.pk,
+        required this.fields,
+    });
+
+    factory Item.fromJson(Map<String, dynamic> json) => Item(
+        model: json["model"],
+        pk: json["pk"],
+        fields: Fields.fromJson(json["fields"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "model": model,
+        "pk": pk,
+        "fields": fields.toJson(),
+    };
+}
+
+class Fields {
+    int user;
+    String name;
+    int amount;
+    String description;
+    String imageUrl;
+
+    Fields({
+        required this.user,
+        required this.name,
+        required this.amount,
+        required this.description,
+        required this.imageUrl,
+    });
+
+    factory Fields.fromJson(Map<String, dynamic> json) => Fields(
+        user: json["user"],
+        name: json["name"],
+        amount: json["amount"],
+        description: json["description"],
+        imageUrl: json["image_url"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "user": user,
+        "name": name,
+        "amount": amount,
+        "description": description,
+        "image_url": imageUrl,
+    };
+}
+
+~~~
+
+3. Membuat sebuah file baru pada folder screens bernama see_items.dart yang akan menampilkan daftar semua item
+~~~
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:enderchest/models/item.dart';
+import 'package:enderchest/screens/item_details.dart';
+import 'package:enderchest/widgets/left_drawer.dart';
+
+class ProductPage extends StatefulWidget {
+    const ProductPage({Key? key}) : super(key: key);
+
+    @override
+    _ProductPageState createState() => _ProductPageState();
+}
+
+class _ProductPageState extends State<ProductPage> {
+Future<List<Item>> fetchProduct() async {
+    // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+    var url = Uri.parse(
+      'http://127.0.0.1:8000/json/');
+    var response = await http.get(
+        url,
+        headers: {"Content-Type": "application/json"},
+    );
+
+    // melakukan decode response menjadi bentuk json
+    var data = jsonDecode(utf8.decode(response.bodyBytes));
+
+    // melakukan konversi data json menjadi object Product
+    List<Item> list_product = [];
+    for (var d in data) {
+        if (d != null) {
+            list_product.add(Item.fromJson(d));
+        }
+    }
+    return list_product;
+}
+
+@override
+Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+        title: const Text('Item'),
+        ),
+        drawer: const LeftDrawer(),
+        body: FutureBuilder(
+            future: fetchProduct(),
+            builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.data == null) {
+                    return const Center(child: CircularProgressIndicator());
+                } else {
+                    if (!snapshot.hasData) {
+                    return const Column(
+                        children: [
+                        Text(
+                            "Tidak ada data produk.",
+                            style:
+                                TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                        ),
+                        SizedBox(height: 8),
+                        ],
+                    );
+                } else {
+                    return ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (_, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ItemDetailPage(item: snapshot.data![index]),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${snapshot.data![index].fields.name}",
+                                  style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+
+                  }
+                }
+            }));
+    }
+}
+
+~~~
+Untuk setiap item saya juga menambahkan GestureDetector sehingga onTap maka akan menunjukan details dari setiap item yang saya buat pada file item_details.dart
+
+4. File item_details.dart yang saya buat pada folder screens berisi kode berikut
+~~~
+import 'package:flutter/material.dart';
+import 'package:enderchest/models/item.dart';
+class ItemDetailPage extends StatelessWidget {
+  final Item item;
+  const ItemDetailPage({Key? key, required this.item}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child:Padding(
+          padding: EdgeInsets.all(16),
+          child:Column(
+            
+            children: [
+              Text('Name: ${item.fields.name}', style: TextStyle(fontSize: 20)),
+              Text('Amount: ${item.fields.amount}', style: TextStyle(fontSize: 18)),
+              Text('Description: ${item.fields.description}', style: TextStyle(fontSize: 16)),
+              Image.network('${item.fields.imageUrl}'),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('Back to List'),
+              ),
+            ],
+          )
+
+        )
+      ),
+    );
+  }
+}
+~~~
 
 </details>

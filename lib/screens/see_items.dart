@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:enderchest/models/item.dart';
+import 'package:enderchest/screens/item_details.dart';
 import 'package:enderchest/widgets/left_drawer.dart';
-import 'package:enderchest/models/item.dart'; // Replace with your actual path
 
 class ProductPage extends StatefulWidget {
     const ProductPage({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class _ProductPageState extends State<ProductPage> {
 Future<List<Item>> fetchProduct() async {
     // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
     var url = Uri.parse(
-        'http://127.0.0.1:8000/json/');
+      'http://127.0.0.1:8000/json/');
     var response = await http.get(
         url,
         headers: {"Content-Type": "application/json"},
@@ -60,58 +61,38 @@ Widget build(BuildContext context) {
                     );
                 } else {
                     return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (_, index) => Container(
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 12),
-                                padding: const EdgeInsets.all(20.0),
-                                child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                    Text(
-                                    "${snapshot.data![index].fields.name}",
-                                    style: const TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold,
-                                    ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text("${snapshot.data![index].fields.amount}"),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                        "${snapshot.data![index].fields.description}")
-                                ],
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (_, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ItemDetailPage(item: snapshot.data![index]),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${snapshot.data![index].fields.name}",
+                                  style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                                 ),
-                            ));
-                    }
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+
+                  }
                 }
             }));
     }
 }
 
-// class ProductListPage extends StatelessWidget {
-//   final List<Item> items;
-
-//   ProductListPage({Key? key, required this.items}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Daftar Item'),
-//       ),
-//       body: ListView.builder(
-//         itemCount: items.length,
-//         itemBuilder: (context, index) {
-//           return Card(
-//             child: ListTile(
-//               title: Text(items[index].name),
-//               subtitle: Text('Harga: ${items[index].price}\nDeskripsi: ${items[index].description}'),
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
