@@ -738,7 +738,7 @@ class _RegisterPageState extends State<RegisterPage> {
 }
 ~~~
 
-2. Membuat file item.dart untuk model yang akan saya gunakan
+3. Membuat file item.dart untuk model yang akan saya gunakan
 ~~~
 // To parse this JSON data, do
 //
@@ -808,9 +808,9 @@ class Fields {
 
 ~~~
 
-3. File shoplist_form.dart yang akan digunakan untuk menambahkan Item baru sudah saya implementasikan pada tugas sebelumnya sehingga dapat digunakan kembali
+4. File shoplist_form.dart yang akan digunakan untuk menambahkan Item baru sudah saya implementasikan pada tugas sebelumnya sehingga dapat digunakan kembali
 
-4. Pada folder screens sudah membuat file bernama see_items.dart yang akan menampilkan daftar semua item, namun saya lakukan perubahan dengan menambahkan GestureDetector sehingga onTap maka akan menunjukan details dari setiap item yang saya buat pada file item_details.dart
+5. Pada folder screens sudah membuat file bernama see_items.dart yang akan menampilkan daftar semua item, namun saya lakukan perubahan dengan menambahkan GestureDetector sehingga onTap maka akan menunjukan details dari setiap item yang saya buat pada file item_details.dart
 ~~~
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -912,7 +912,7 @@ Widget build(BuildContext context) {
 
 ~~~
 
-5. File item_details.dart yang saya buat pada folder screens berisi kode berikut
+6. File item_details.dart yang saya buat pada folder screens berisi kode berikut
 ~~~
 import 'package:flutter/material.dart';
 import 'package:enderchest/models/item.dart';
