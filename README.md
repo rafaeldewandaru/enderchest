@@ -467,3 +467,26 @@ if (item.name == "Lihat Item") {
 ~~~
 
 </details>
+
+
+<details>
+<summary>Tugas 9</summary>
+
+### 9. Apakah bisa kita melakukan pengambilan data JSON tanpa membuat model terlebih dahulu? Jika iya, apakah hal tersebut lebih baik daripada membuat model sebelum melakukan pengambilan data JSON?
+
+### 10. Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+Dalam pengembangan aplikasi Flutter, CookieRequest berperan penting dalam mengelola cookies untuk fungsi seperti mengelola session, pengguna, autentikasi, penyimpanan preferensi, dan tracking. Instance perlu dibagikan ke semua komponen di aplikasi flutter agar semua komponen aplikasi menggunakan sesi yang sama untuk berkomunikasi yang bermanfaat untuk memastikan konsistensi data, efisiensi sumber daya, serta keamanan yang lebih baik sehingga memudahkan pengembangan dan pemeliharaan aplikasi. Pendekatan ini juga mendukung konsistensi cookie melintasi siklus hidup berbagai komponen aplikasi, memudahkan debugging, dan menjaga kebijakan keamanan yang konsisten, sesuai dengan kebutuhan spesifik aplikasi dan arsitektur dari backend.
+
+### 11. Jelaskan mekanisme pengambilan data dari JSON hingga dapat ditampilkan pada Flutter.
+1. membuat lalu mengirim permintaan HTTP ke server atau API yang menyediakan data dalam format JSON, dalam konteks ini berarti web django yang sudah dibuat pada tugas sebelumnya
+2. setelah mendapatkan respons JSON dari server, respons tersebut yang biasanya dalam format teks, perlu di-parse menjadi format yang bisa dipahami oleh Dart, yaitu sebagai struktur data Dart 
+3. data yang diperoleh dari JSON diubah menjadi objek Dart menggunakan model data yang sudah dibuat untuk membantu dalam manajemen tipe data dan memudahkan pemeliharaan kode
+4. setelah data di-parse dan diubah menjadi model, data tersebut dapat digunakan untuk membangun widget di Flutter dan menampilkan informasinya di UI
+
+### 12. Jelaskan mekanisme autentikasi dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+
+### 13. Sebutkan seluruh widget yang kamu pakai pada tugas ini dan jelaskan fungsinya masing-masing.
+
+### 14. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
+
+</details>
