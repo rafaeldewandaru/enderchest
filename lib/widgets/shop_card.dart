@@ -1,53 +1,143 @@
+// import 'package:flutter/material.dart';
+// import '../screens/shoplist_form.dart';
+// import '../screens/see_items.dart';
+
+// class ShopItem {
+//   final String name;
+//   final IconData icon;
+//   final Color color;
+
+//   ShopItem(this.name, this.icon, this.color);
+// }
+
+// class ShopCard extends StatelessWidget {
+//   final ShopItem item;
+
+//   const ShopCard(this.item, {super.key}); // Constructor
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Material(
+//       color: item.color,
+//       child: InkWell(
+//         // Area responsive terhadap sentuhan
+//         onTap: () {
+//           // Memunculkan SnackBar ketika diklik
+//           ScaffoldMessenger.of(context)
+//             ..hideCurrentSnackBar()
+//             ..showSnackBar(SnackBar(
+//                 content: Text("Kamu telah menekan tombol ${item.name}!")));
+
+//           // Navigate ke route yang sesuai (tergantung jenis tombol)
+//           if (item.name == "Tambah Item") {
+//             Navigator.push(
+//                 context,
+//                 MaterialPageRoute(
+//                   builder: (context) => ShopFormPage(),
+//                 ));
+//           }
+
+//           if (item.name == "Lihat Item") {
+//             Navigator.push(
+//               context,
+//               MaterialPageRoute(
+//                   builder: (context) => ProductListPage(items: itemList)),
+//             );
+//           }
+//         },
+//         child: Container(
+//           // Container untuk menyimpan Icon dan Text
+//           padding: const EdgeInsets.all(8),
+//           child: Center(
+//             child: Column(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 Icon(
+//                   item.icon,
+//                   color: Colors.white,
+//                   size: 30.0,
+//                 ),
+//                 const Padding(padding: EdgeInsets.all(3)),
+//                 Text(
+//                   item.name,
+//                   textAlign: TextAlign.center,
+//                   style: const TextStyle(color: Colors.white),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
 import 'package:flutter/material.dart';
-import '../screens/shoplist_form.dart';
-import '../screens/see_items.dart';
-
-class ShopItem {
-  final String name;
-  final IconData icon;
-  final Color color;
-
-  ShopItem(this.name, this.icon, this.color);
-}
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:enderchest/screens/see_items.dart';
+import 'package:enderchest/screens/login.dart';
+import 'package:enderchest/screens/shoplist_form.dart';
 
 class ShopCard extends StatelessWidget {
   final ShopItem item;
 
-  const ShopCard(this.item, {super.key}); // Constructor
+  const ShopCard(this.item, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: item.color,
-      child: InkWell(
-        // Area responsive terhadap sentuhan
-        onTap: () {
-          // Memunculkan SnackBar ketika diklik
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-                content: Text("Kamu telah menekan tombol ${item.name}!")));
+    final request = context.watch<CookieRequest>();
 
-          // Navigate ke route yang sesuai (tergantung jenis tombol)
+    return Material(
+      color: Colors.indigo,
+      child: InkWell(
+        onTap: () async {
           if (item.name == "Tambah Item") {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ShopFormPage(),
+              context, 
+              MaterialPageRoute(
+                builder: (context) => ShopFormPage()));
+          }
+          
+          else if (item.name == "Lihat Item") {
+            Navigator.push(
+              context, 
+              MaterialPageRoute(
+                builder: (context) => const ProductPage()));
+          } 
+          
+          else if (item.name == "Logout") {
+            final response = await request.logout(
+              // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+              "http://127.0.0.1:8000/auth/logout/");
+              String message = response["message"];
+              if (response['status']) {
+                String uname = response["username"];
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("$message Sampai jumpa, $uname."),
                 ));
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+              );
+            } 
+            
+            else {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("$message"),
+              ));
+            }
+          } 
+          
+          else {
+            ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!")));
           }
 
-          if (item.name == "Lihat Item") {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ProductListPage(items: itemList)),
-            );
-          }
         },
         child: Container(
-          // Container untuk menyimpan Icon dan Text
-          padding: const EdgeInsets.all(8),
+          padding: EdgeInsets.all(8),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -55,14 +145,14 @@ class ShopCard extends StatelessWidget {
                 Icon(
                   item.icon,
                   color: Colors.white,
-                  size: 30.0,
+                  size: 30,
                 ),
                 const Padding(padding: EdgeInsets.all(3)),
                 Text(
                   item.name,
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: Colors.white),
-                ),
+                )
               ],
             ),
           ),
@@ -70,4 +160,12 @@ class ShopCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class ShopItem {
+  final String name;
+  final IconData icon;
+  final Color color;
+
+  ShopItem(this.name, this.icon, this.color);
 }

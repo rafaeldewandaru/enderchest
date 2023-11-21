@@ -5,7 +5,7 @@ import 'package:enderchest/widgets/shop_card.dart';
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
   final List<ShopItem> items = [
-    ShopItem("Lihat Item", Icons.movie, Colors.teal),
+    ShopItem("Lihat Item", Icons.inventory, Colors.teal),
     ShopItem("Tambah Item", Icons.add_shopping_cart, Colors.lightBlue),
     ShopItem("Logout", Icons.logout, Colors.blue),
   ];
