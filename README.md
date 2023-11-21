@@ -494,10 +494,12 @@ Dalam pengembangan aplikasi Flutter, CookieRequest berperan penting dalam mengel
 ### 13. Sebutkan seluruh widget yang kamu pakai pada tugas ini dan jelaskan fungsinya masing-masing.
 
 ### 14. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
-1. Membuat halaman login dan menggunakan url web django untuk request login
+1. Menambahkan fungsi untuk login, logout, dan register (bonus) pada web django
+2. Membuat halaman login.dart dan register.dart untuk keperluan autentikasi
 ~~~
 import 'package:enderchest/screens/menu.dart';
 import 'package:flutter/material.dart';
+import 'package:enderchest/screens/register.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -604,6 +606,14 @@ class _LoginPageState extends State<LoginPage> {
                             },
                             child: const Text('Login'),
                         ),
+                        ElevatedButton(
+                          onPressed:() {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => RegisterPage()),
+                            );
+                          }, 
+                          child: Text("Register"))
                     ],
                 ),
             ),
@@ -611,7 +621,122 @@ class _LoginPageState extends State<LoginPage> {
     }
 }
 ~~~
-kemudian saya juga menambahkan fungsi yang sesuai pada web django
+
+~~~
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:enderchest/screens/login.dart'; 
+
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key}) : super(key: key);
+
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Register")),
+      body: Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: _usernameController,
+              decoration: const InputDecoration(labelText: "Username"),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _passwordController,
+              decoration: const InputDecoration(labelText: "Password"),
+              obscureText: true,
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () async {
+                String username = _usernameController.text;
+                String password = _passwordController.text;
+                try {
+                  final response = await http.post(
+                    Uri.parse("http://127.0.0.1:8000/auth/register/"),
+                    body: {
+                      'username': username,
+                      'password': password,
+                    },
+                  );
+
+                  final responseData = json.decode(response.body);
+
+                  if (response.statusCode == 201) {
+                    // Registration successful
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Registration Successful'),
+                        content: Text(responseData['message']),
+                        actions: [
+                          TextButton(
+                            child: const Text('OK'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => LoginPage()), // Replace with your login page widget
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    // Registration failed
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Registration Failed'),
+                        content: Text(responseData['message']),
+                        actions: [
+                          TextButton(
+                            child: const Text('OK'),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  // Handle any errors here
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Error'),
+                      content: Text(e.toString()),
+                      actions: [
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
+              child: const Text("Register"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+~~~
 
 2. Membuat file item.dart untuk model yang akan saya gunakan
 ~~~
@@ -683,7 +808,9 @@ class Fields {
 
 ~~~
 
-3. Membuat sebuah file baru pada folder screens bernama see_items.dart yang akan menampilkan daftar semua item
+3. File shoplist_form.dart yang akan digunakan untuk menambahkan Item baru sudah saya implementasikan pada tugas sebelumnya sehingga dapat digunakan kembali
+
+4. Pada folder screens sudah membuat file bernama see_items.dart yang akan menampilkan daftar semua item, namun saya lakukan perubahan dengan menambahkan GestureDetector sehingga onTap maka akan menunjukan details dari setiap item yang saya buat pada file item_details.dart
 ~~~
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -784,9 +911,8 @@ Widget build(BuildContext context) {
 }
 
 ~~~
-Untuk setiap item saya juga menambahkan GestureDetector sehingga onTap maka akan menunjukan details dari setiap item yang saya buat pada file item_details.dart
 
-4. File item_details.dart yang saya buat pada folder screens berisi kode berikut
+5. File item_details.dart yang saya buat pada folder screens berisi kode berikut
 ~~~
 import 'package:flutter/material.dart';
 import 'package:enderchest/models/item.dart';
