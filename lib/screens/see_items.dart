@@ -82,7 +82,8 @@ Widget build(BuildContext context) {
                                 Text(
                                   "${snapshot.data![index].fields.name}",
                                   style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                                ),
+                                ),     
+                                Text('Amount: ${snapshot.data![index].fields.amount}', style: TextStyle(fontSize: 18)),
                               ],
                             ),
                           ),

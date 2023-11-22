@@ -492,6 +492,41 @@ Dalam pengembangan aplikasi Flutter, CookieRequest berperan penting dalam mengel
 5. apabila request login berhasil, maka user akan diarahkan ke Home Page dan tampilkan menu pada Flutter
 
 ### 13. Sebutkan seluruh widget yang kamu pakai pada tugas ini dan jelaskan fungsinya masing-masing.
+- Scaffold: Menyediakan struktur dasar untuk tampilan aplikasi Material Design. Digunakan untuk mengatur elemen-elemen seperti AppBar, Drawer, dan Body.
+- Center: Widget ini digunakan untuk menengahkan konten anak-anaknya dalam ruang yang tersedia.
+- Padding: Menambahkan padding (jarak) di sekitar widget anak-anaknya.
+- Column: Mengatur widget anak-anaknya secara vertikal.
+- Text: Menampilkan teks dengan gaya tertentu.
+- Image.network: Menampilkan gambar dari URL.
+- ElevatedButton: Tombol dengan elevasi, bergaya Material Design.
+- Navigator.pop: Digunakan untuk kembali ke halaman sebelumnya dalam stack navigasi.
+- TextStyle: Mendefinisikan gaya teks seperti ukuran font dan warna.
+- AppBar: Widget di bagian atas layar, biasanya menampilkan judul.
+- Container: Menggabungkan dekorasi, padding, margin, dan batasan untuk anak-anaknya.
+- TextField: Widget input teks.
+- InputDecoration: Mendefinisikan dekorasi untuk TextField.
+- SizedBox: Menyediakan kotak dengan ukuran tetap.
+- AlertDialog: Menampilkan dialog ke pengguna.
+- TextButton: Tombol dengan gaya teks.
+- Navigator.pushReplacement: Navigasi ke halaman lain dengan menggantikan halaman saat ini.
+- MaterialPageRoute: Mengatur transisi dan pembangunan halaman tujuan.
+- TextEditingController: Mengontrol teks yang dimasukkan dalam TextField.
+- Drawer: Panel navigasi samping yang bisa ditarik keluar.
+- FutureBuilder: Membangun widget berdasarkan interaksi terakhir dengan Future.
+- CircularProgressIndicator: Menampilkan indikator loading berputar.
+- ListView.builder: Membangun daftar item yang dibangun saat di-scroll.
+- GestureDetector: Mendeteksi interaksi pengguna seperti tap.
+- Navigator.push: Navigasi ke halaman lain dengan animasi.
+- Form: Widget untuk membuat form dengan beberapa FormField.
+- SingleChildScrollView: Memungkinkan scrolling jika kontennya melebihi batas layar.
+- TextFormField: Widget form untuk input teks dengan dekorasi dan validasi.
+- OutlineInputBorder: Menghasilkan border berbentuk persegi dengan sudut melengkung.
+- Align: Menyelaraskan widget anak-anaknya berdasarkan alignment.
+- ButtonStyle: Mendefinisikan gaya untuk ElevatedButton.
+- MaterialStateProperty.all: Menerapkan gaya yang sama di semua keadaan tombol.
+- ScaffoldMessenger: Menampilkan SnackBar.
+- SnackBar: Pesan pop-up di bagian bawah layar.
+
 
 ### 14. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
 1. Menambahkan fungsi untuk login, logout, dan register (bonus) pada web django
