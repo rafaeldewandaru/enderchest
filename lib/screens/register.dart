@@ -40,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 String password = _passwordController.text;
                 try {
                   final response = await http.post(
-                    Uri.parse("http://127.0.0.1:8000/auth/register/"),
+                    Uri.parse("http://rafael-bismo-tugas.pbp.cs.ui.ac.id/auth/register/"),
                     body: {
                       'username': username,
                       'password': password,
